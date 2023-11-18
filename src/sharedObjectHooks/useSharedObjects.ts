@@ -59,7 +59,7 @@ export function useSharedObjects(
     let isLocal = false;
     // Create live share host
     // Uncomment below line for local testing
-    isLocal = true;
+    // isLocal = true;
     const host = isLocal
       ? TestLiveShareHost.create()
       : inTeams()

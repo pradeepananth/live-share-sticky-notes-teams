@@ -8,7 +8,7 @@ import { app } from "@microsoft/teams-js";
 import { useEffect, useState } from "react";
 import { inTeams } from "./inTeams";
 
-export const useTeamsContext = (initialized: boolean) => {
+export const useTeamsContext = (initialized: boolean): app.Context => {
   const [ctx, setCtx] = useState<app.Context | null>(null);
 
   useEffect(() => {
