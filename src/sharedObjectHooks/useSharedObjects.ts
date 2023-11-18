@@ -12,10 +12,6 @@ import {
   AzureContainerServices,
 } from "@fluidframework/azure-client";
 import { LiveShareHost } from "@microsoft/teams-js";
-import {
-  MockServerLiveShareHost,
-  LiveShareHostOptions,
-} from "./MockServerLiveShareHost";
 import { inTeams } from "../teamsContext/inTeams";
 
 /**
@@ -27,9 +23,7 @@ import { inTeams } from "../teamsContext/inTeams";
  *
  * @returns Shared objects managed by the apps fluid container.
  */
-export function useSharedObjects(
-  liveShareHostOptions: LiveShareHostOptions | undefined
-) {
+export function useSharedObjects() {
   const [results, setResults] = useState<{
     container: IFluidContainer;
     services: AzureContainerServices;
@@ -56,15 +50,10 @@ export function useSharedObjects(
       },
     };
 
-    let isLocal = false;
     // Create live share host
-    // Uncomment below line for local testing
-    // isLocal = true;
-    const host = isLocal
-      ? TestLiveShareHost.create()
-      : inTeams()
+    const host = inTeams()
       ? LiveShareHost.create()
-      : MockServerLiveShareHost.create(liveShareHostOptions!);
+      : TestLiveShareHost.create();
 
     // Create the client, join container, and set results
     console.log("useSharedObjects: joining container");

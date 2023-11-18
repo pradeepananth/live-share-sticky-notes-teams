@@ -16,7 +16,7 @@ import { useNotesMap } from "../sharedObjectHooks/useNotesMap";
 export const NoteContainer = () => {
   // state for storing notes
   // state for the notes array
-  const { container, notesMap } = useSharedObjects(undefined);
+  const { container, notesMap } = useSharedObjects();
 
   const { started, notes, addNote, removeNote } = useNotesMap(notesMap);
   const [count, setCount] = useState(0);
