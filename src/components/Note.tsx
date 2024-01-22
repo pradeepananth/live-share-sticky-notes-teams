@@ -8,7 +8,7 @@
 import React from 'react';
 import './note.css';
 
-export const Note = ({ index, text, color, onDelete }) => {
+export const Note = ({ index, text, color, name, onDelete }) => {
   // function to handle delete button click
   const handleClick = () => {
     // call the onDelete prop with the index of the note
@@ -22,6 +22,9 @@ export const Note = ({ index, text, color, onDelete }) => {
       <p>{text}</p>
       {/* render a button with the delete-button class and the handleClick function */}
       <button className="delete-button" onClick={handleClick}></button>
+      <footer className="note-footer">
+      <p>{name}</p>
+      </footer>
     </div>
   );
 };

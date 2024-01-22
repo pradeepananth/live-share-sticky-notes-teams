@@ -9,20 +9,32 @@ import { useState } from "react";
 import { Note } from "./Note";
 import "./noteContainer.css";
 import React from "react";
-import { useSharedObjects } from "../sharedObjectHooks/useSharedObjects";
-import { LiveSharePage } from "./LiveSharePage";
-import { useNotesMap } from "../sharedObjectHooks/useNotesMap";
+import { v4 as uuid } from "uuid";
+import { useLivePresence, useSharedMap } from "@microsoft/live-share-react";
+
+export const EXAMPLE_SHARED_MAP_KEY = "CUSTOM-CARDS-MAP";
+
+export interface ISharedCardValue {
+  id: string;
+  text: string;
+  color: string;
+  userName: string;
+}
 
 export const NoteContainer = () => {
   // state for storing notes
   // state for the notes array
-  const { container, notesMap } = useSharedObjects();
-
-  const { started, notes, addNote, removeNote } = useNotesMap(notesMap);
-  const [count, setCount] = useState(0);
-  const increment = () => {
-    setCount(count + 1);
-  };
+  const { map, setEntry, deleteEntry } = useSharedMap<ISharedCardValue>(
+    EXAMPLE_SHARED_MAP_KEY
+);
+const {
+  localUser,
+  allUsers,
+  updatePresence,
+  livePresence: v1,
+} = useLivePresence(
+  "CUSTOM-PRESENCE-KEY",
+);
   // state for the input value
   const [input, setInput] = useState("");
 
@@ -37,25 +49,25 @@ export const NoteContainer = () => {
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // create a new note object with the input value and a random color
+    const id = uuid();
     const newNote = {
-      id: count.toString(),
+      id: id,
       text: input,
       color: `hsl(${Math.floor(Math.random() * 360)}, 100%, 75%)`,
+      userName: localUser.displayName.split(" ")[0],
     };
     // update the notes array with the new note
-    addNote(count.toString(), newNote);
-    increment();
+    setEntry(id, newNote);
     // clear the input value
     setInput("");
   };
 
   // function to handle note delete
   const handleDelete = (index: string) => {
-    removeNote(index);
+    deleteEntry(index);
   };
 
   return (
-    <LiveSharePage container={container} started={started}>
       <div className="note-container">
         <h1>Sticky Notes</h1>
         <form onSubmit={handleSubmit}>
@@ -72,18 +84,17 @@ export const NoteContainer = () => {
           </button>
         </form>
         <div className="notes-container">
-          {notes.map((note: any, index) => (
+          {[...map.values()].map((cardValue) => (
             // render a Note component for each note in the array
             <Note
-              key={index}
-              index={note.id}
-              text={note.text}
-              color={note.color}
+              index={cardValue.id}
+              text={cardValue.text}
+              color={cardValue.color}
+              name={cardValue.userName}
               onDelete={handleDelete}
             />
           ))}
         </div>
       </div>
-    </LiveSharePage>
   );
 };
