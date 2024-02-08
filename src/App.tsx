@@ -10,14 +10,16 @@ import { LiveShareProvider } from "@microsoft/live-share-react";
 import { TestLiveShareHost } from "@microsoft/live-share";
 import { useState } from "react";
 
+const IN_TEAMS = inTeams();
+
 const App = () => {
-  const IN_TEAMS = inTeams();
   const initialized = useTeamsInitialize(IN_TEAMS);
   const ctx = useTeamsContext(initialized);
   const [host] = useState(
     IN_TEAMS ? LiveShareHost.create() : TestLiveShareHost.create()
 );
-const liveShareProvider =  <LiveShareProvider joinOnLoad host={host}>
+const liveShareProvider =  
+        <LiveShareProvider joinOnLoad host={host}>
               <NoteContainer />
         </LiveShareProvider>;
 

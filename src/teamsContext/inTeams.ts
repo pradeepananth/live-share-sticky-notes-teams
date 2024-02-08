@@ -10,5 +10,6 @@ export function inTeams() {
     ? new URL(`${window.location.href.split('/#/').join('/')}`)
     : new URL(window.location.href);
   const params = url.searchParams;
+  console.log(`App.js: inTeams: ${!!params.get('inTeams')}`);
   return !!params.get('inTeams');
 }

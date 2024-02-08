@@ -10,7 +10,7 @@ import { Note } from "./Note";
 import "./noteContainer.css";
 import React from "react";
 import { v4 as uuid } from "uuid";
-import { useLivePresence, useSharedMap } from "@microsoft/live-share-react";
+import { useLivePresence, useLiveShareContext, useSharedMap } from "@microsoft/live-share-react";
 
 export const EXAMPLE_SHARED_MAP_KEY = "CUSTOM-CARDS-MAP";
 
@@ -37,7 +37,7 @@ const {
 );
   // state for the input value
   const [input, setInput] = useState("");
-
+  const { joined, joinError } = useLiveShareContext();
   // function to handle input change
   const handleChange = (e: {
     target: { value: React.SetStateAction<string> };
@@ -68,6 +68,8 @@ const {
   };
 
   return (
+     <>
+     {joined && (
       <div className="note-container">
         <h1>Sticky Notes</h1>
         <form onSubmit={handleSubmit}>
@@ -95,6 +97,9 @@ const {
             />
           ))}
         </div>
-      </div>
+      </div>)}
+      {joinError && <div>Failed to join live share session: ${joinError.message}</div>}
+      {!joined && !joinError && <div>Joining live share session...</div>}
+      </>
   );
 };
