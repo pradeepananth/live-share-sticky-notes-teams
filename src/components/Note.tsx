@@ -5,8 +5,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable react/prop-types */
 
-import React from 'react';
-import './note.css';
+import { Avatar, Button, Card, Popover, PopoverSurface, PopoverTrigger, Text } from '@fluentui/react-components';
+import { FlexColumn, FlexRow } from './flex';
+import { Delete24Filled } from '@fluentui/react-icons';
 
 export const Note = ({ index, text, color, name, onDelete }) => {
   // function to handle delete button click
@@ -17,15 +18,43 @@ export const Note = ({ index, text, color, name, onDelete }) => {
 
   return (
     // render a div with the note class and the given color
-    <div className="note" style={{ backgroundColor: color }}>
-      {/* render the text prop as the note content */}
-      <p>{text}</p>
-      {/* render a button with the delete-button class and the handleClick function */}
-      <button className="delete-button" onClick={handleClick}></button>
-      <footer className="note-footer">
-      <p>{name}</p>
-      </footer>
-    </div>
+    <Card style={{
+      width: "250px",
+      maxWidth: "100%",
+      height: "fit-content",
+      backgroundColor: color,
+      margin: "15px",
+    }}>
+    <header>
+      <FlexRow hAlign='end'>
+      <Button
+          size="small"
+          shape="circular"
+          icon={<Delete24Filled />}
+          onClick={handleClick}
+        ></Button>
+      </FlexRow>
+    </header>
+    <Text weight='semibold'>
+          {text}
+      </Text>
+    <footer>
+    <FlexRow hAlign='end'>
+     <Popover key={name} openOnHover mouseLeaveDelay={0}>
+       <PopoverTrigger disableButtonEnhancement>
+         <Avatar name={name} />
+        </PopoverTrigger>
+        <PopoverSurface>
+            <FlexColumn gap="smaller">
+                <FlexRow>
+                    <Text>{name}</Text>
+                </FlexRow>
+            </FlexColumn>
+        </PopoverSurface>
+      </Popover>
+    </FlexRow>
+    </footer>
+  </Card>
   );
 };
 

@@ -1,19 +1,17 @@
 import { FC } from "react";
+import { Title2, Subtitle2 } from "@fluentui/react-components";
+import { FlexColumn } from "./flex";
 
 const Sidepanel: FC = () => {
-    const textStyle = {
-        // Use flexbox to center the text horizontally and vertically
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // Set the font size and color
-        fontSize: '36px',
-    };
     return (
-        <div style={textStyle}>
-            Welcome to Live Share Sticky notes!
-            Press the Share button to start presenting to stage.
-        </div>
+        <FlexColumn vAlign="center" hAlign="center" fill="view" gap="small">
+            <Title2 as="h2" block align="center">
+                Welcome to Live Share Sticky Notes!
+            </Title2>
+            <Subtitle2 as="p" block align="center">
+                Press the Share button to start presenting to stage.
+            </Subtitle2>
+        </FlexColumn>
     );
 };
 
